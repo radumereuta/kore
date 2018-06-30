@@ -1,0 +1,689 @@
+\documentclass[UTF8,11pt]{article}
+
+  % Package for using the full page.
+  \usepackage{fullpage}
+  
+  % Package for writing algorithms (why do we need this one?).
+  \usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+  
+  % Package for using colored texts.
+  \usepackage[dvipsnames]{xcolor}
+  
+  % Pakcage for using multiple optional parameters in new commands.
+  \usepackage{xargs}
+
+  % Packages for writing comments and todo notes.
+  \usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+  \newcommandx{\unsure}[2][1=]
+    {\todo[linecolor=red,backgroundcolor=red!25,
+	bordercolor=red,#1]
+	{#2}\xspace{}}
+  \newcommandx{\change}[2][1=]
+    {\todo[linecolor=blue,backgroundcolor=blue!25,
+	bordercolor=blue,#1]
+	{#2}\xspace{}}
+  \newcommandx{\info}[2][1=]
+    {\todo[linecolor=OliveGreen,backgroundcolor=OliveGreen!25,
+	bordercolor=OliveGreen,#1]
+	{#2}}
+  \newcommandx{\improvement}[2][1=]
+    {\todo[linecolor=Plum,backgroundcolor=Plum!25,bordercolor=Plum,#1]
+	{#2}\xspace{}}
+  \newcommandx{\thiswillnotshow}[2][1=]
+    {\todo[disable,#1]
+	{#2}\xspace{}}
+
+  % What are there for?
+  % Select what to do with todonotes: 
+  % \usepackage[disable]{todonotes} % notes not showed
+  % \usepackage[draft]  {todonotes} % notes showed
+
+  % Select what to do with command \comment:  
+  % \newcommand{\comment}[1]
+      {}                                    %comment not showed
+  \newcommand{\comment}[1]
+    {\par {\bfseries \color{blue} #1 \par}} %comment showed
+  
+  % ams math packages.
+  \usepackage{amsmath, amssymb, amsthm}
+  
+  % Declare a global counter for theorem environments:
+  \newcounter{thmcounter}
+  
+  % Define new theorem styles and theorem environments.
+  \theoremstyle{plain}
+  
+  \newtheorem{theorem}    [thmcounter]{Theorem}
+  \newtheorem{corollary}  [thmcounter]{Corollary}
+  \newtheorem{lemma}      [thmcounter]{Lemma}
+  \newtheorem{proposition}[thmcounter]{Proposition}
+  
+  \theoremstyle{definition}
+  
+  \newtheorem{definition} [thmcounter]{Definition}
+  \newtheorem{example}    [thmcounter]{Example}
+  
+  \theoremstyle{remark}
+  
+  \newtheorem{remark}     [thmcounter]{Remark}
+  \newtheorem{notation}   [thmcounter]{Notation}
+    
+  % Package for changing fonts in the Verbatim environment:
+  \usepackage{fancyvrb}
+  
+  % Package for writing captions for align environment:
+  \usepackage{capt-of}
+  
+  % Package for URLs:
+  \usepackage{hyperref}  
+  
+  % Package for tables:
+  \usepackage[english]{babel}  
+  
+  % Package for quotations:
+  \usepackage{csquotes}
+  
+  % Package for customizing lists environments:
+  \usepackage{enumitem}
+  
+  % Package for writing long tables:
+  \usepackage{longtable}
+  
+  % Package for graphics
+  \usepackage{graphicx}
+  
+  \usepackage{xspace}
+  \usepackage{caption}
+  \usepackage{longtable}
+  
+  % Define ceiling and flooring symbols:
+  \usepackage{mathtools}
+  \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+  \DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+  % Package for underlining and strikethrough texts.
+  \usepackage[normalem]{ulem}
+  
+  % Package for display-mode quotations.
+  \usepackage{csquotes}
+  
+  % Define double-bracket [[P]]
+  \usepackage{stmaryrd}
+  \newcommand{\Bracket}[1]{\llbracket#1\rrbracket}
+  
+  % Package for writing natural proof deductions
+  \usepackage{prftree}
+  
+  \usepackage{enumitem}
+  
+  % logic connectives
+  \newcommand{\imp}{\to}
+  \newcommand{\dimp}{\leftrightarrow}
+  \newcommand{\ddd}{,\dots,}
+  
+  % contexts
+  \newcommand{\CSub}[1]{C_{#1}}
+  \newcommand{\Csigma}{\CSub{\sigma}}
+  \newcommand{\Csigmai}{\CSub{\sigma,i}}
+  \newcommand{\Csigmaapp}[1]{\CSub{\sigma}[#1]}
+  \newcommand{\Csigmaiapp}[1]{\CSub{\sigma,i}[#1]}
+  \newcommand{\Capp}[1]{C[#1]}
+  
+  % name of the proof rules
+  \newcommand{\prule}[1]{\textsc{(#1)}}
+  
+  \newcommand{\modusponens}{\prule{Modus Ponens}\xspace}
+  \newcommand{\universalgeneralization}{\prule{Universal Generalization}\xspace}
+  \newcommand{\necessitation}{\prule{Necessitation}\xspace}
+  \newcommand{\existence}{\prule{Existence}\xspace}
+  \newcommand{\singletonvariable}{\prule{Singleton Variable}\xspace}
+  \newcommand{\propagationbottom}{\prule{Propagation$_\bot$}\xspace}
+  \newcommand{\propagationvee}{\prule{Propagation$_\vee$}\xspace}
+  \newcommand{\propagationexists}{\prule{Propagation$_\exists$}\xspace}
+  \newcommand{\variablesubstitution}{\prule{Variable Substitution}\xspace}
+  \newcommand{\framing}{\prule{Framing}\xspace}
+  \newcommand{\propositionaltautology}{\prule{Propositional Tautology}\xspace}
+  \newcommand{\forallrule}{\prule{$\forall$}\xspace}
+  \newcommand{\membership}{\prule{Membership}\xspace}
+  \newcommand{\membershipintroduction}{\prule{Membership Introduction}\xspace}
+  \newcommand{\membershipelimination}{\prule{Membership Elimination}\xspace}
+  \newcommand{\membershipneg}{\prule{Membership$_\neg$}\xspace}
+  \newcommand{\membershipwedge}{\prule{Membership$_\wedge$}\xspace}
+  \newcommand{\membershipexists}{\prule{Membership$_\exists$}\xspace}
+  \newcommand{\equalityelimination}{\prule{Equality Elimination}\xspace}
+  \newcommand{\membershipsymbol}{\prule{Membership Symbol}\xspace}
+  \newcommand{\membershipvariable}{\prule{Membership Variable}\xspace}
+  \newcommand{\functionalsubstitution}{\prule{Functional Substitution}\xspace}
+    
+  % Package for writing BNF syntax
+  \usepackage{syntax}
+  
+  % Package for lstlisting and definition of Kore
+  \usepackage{listings}
+  % Define colors
+  \definecolor{codegray}{rgb}{0.5,0.5,0.5}
+  \definecolor{backgray}{RGB}{250,250,250}
+  \definecolor{codegreen}{RGB}{50,205,50}
+  \definecolor{codeblue}{RGB}{50,50,255}
+  % Define Kore Language style
+  \lstdefinelanguage{kore}
+  {
+  	% print whole listing small and in serif fonts
+  	basicstyle=\ttfamily\footnotesize,
+  	% use /* */ for comments
+  	morecomment=[s]{/*}{*/},
+  	% print white for comments
+  	commentstyle=\color{codegray},
+  	% print line number in the left, in tiny fonts
+  	numbers=left,
+  	numberstyle=\tiny,
+  	% print all characters at their natural width
+  	columns=fullflexible,
+  	% print background color grey
+  	backgroundcolor=\color{backgray},
+  	% regard some characters as letters
+  	alsoletter={-\#\\},
+  	% list of declaration keywords
+  	keywordstyle=[1]\color{codeblue},
+  	morekeywords=[1]{
+  		module,
+  		endmodule,
+  		hooked-sort,
+  		sort,
+  		symbol,
+  		hooked-symbol,
+  		alias,
+  		axiom,
+  	},
+    % list of connectives
+    keywordstyle=[2]\color{codegreen},
+    morekeywords=[2]{
+    	\\not,
+    	\\or,
+    	\\implies,
+    	\\and,
+    	\\equals,
+    	\\exists,
+    	\\forall,
+    	\\iff
+    }
+  }
+
+  % Define |-fin
+  \newcommand{\vdashfin}{\vdash_\text{fin}}
+
+  % Define the colon ":" that is used in "x:s"
+  % with less spacing around.
+  \newcommand{\cln}{\texttt{:}}
+
+  % Define the curly K:
+  \newcommand{\K}{\mbox{$\mathbb{K}$}\xspace}
+  
+  % Define commands that are used in Sec 2.  
+  \newcommand{\Nat}{\textit{Nat}}
+  \newcommand{\String}{\textit{String}}
+  \newcommand{\Rat}{\textit{Rat}}
+  \newcommand{\KNat}{\textit{KNat}}
+  \newcommand{\Int}{\textit{Int}}
+  \newcommand{\Bool}{\textit{Bool}}
+  \newcommand{\List}{\textit{List}}
+  \newcommand{\KList}{\textit{KList}}
+  \newcommand{\nil}{\textit{nil}}
+  \newcommand{\cons}{\textit{cons}}
+  \newcommand{\append}{\textit{append}}
+  \newcommand{\Bag}{\textit{Bag}}
+  \newcommand{\Set}{\textit{Set}}
+  \newcommand{\Map}{\textit{Map}}
+  \newcommand{\emptyMap}{\textit{empty}}
+  \newcommand{\bindMap}{\textit{bind}}
+  \newcommand{\mergeMap}{\textit{merge}}
+  \newcommand{\ittrue}{\textit{true}}
+  \newcommand{\itfalse}{\textit{false}}
+  \newcommand{\itceil}{\textit{ceil}}
+  
+  \newcommand{\Pred}{\textit{Pred}}
+
+  \newcommand{\Context}{\textit{Context}}
+  \newcommand{\hole}{\boxempty}
+  \newcommand{\Exp}{\textit{Exp}}
+  \newcommand{\AExp}{\textit{AExp}}
+  \newcommand{\BExp}{\textit{BExp}}
+  \newcommand{\Stmt}{\textit{Stmt}}
+  \newcommand{\ite}{\textsf{ite}}
+  \newcommand{\ttrue}{\textit{true}}
+  \newcommand{\ffalse}{\textit{false}}
+  \newcommand{\app}{\textit{app}}
+  \newcommand{\KExp}{\mathit{\#Exp}}
+  \newcommand{\Klambdazero}{\mathit{Klambda0}}
+  \newcommand{\Kapp}{\mathit{Kapp}}
+  \newcommand{\Klambda}{\mathit{Klambda}}
+  \newcommand{\parametric}[2]{{#1}\raisebox{.2ex}{\texttt{\footnotesize{\{}}}#2\raisebox{.2ex}{\texttt{\footnotesize{\}}}}}
+  \newcommand{\parametricscript}[2]{{#1}\raisebox{.2ex}{\texttt{\tiny{\{}}}#2\raisebox{.2ex}{\texttt{\tiny{\}}}}}
+  
+  \newcommand{\zero}{\textit{zero}}
+  \newcommand{\Kzero}{\textit{Kzero}}
+  \newcommand{\Ksucc}{\textit{Ksucc}}
+  \newcommand{\KSymbolsucc}{\textit{KSymbolsucc}}
+  \newcommand{\Mod}{\textit{Mod}}
+  \newcommand{\denote}[1]{\llbracket{#1}\rrbracket}
+  \newcommand{\reduct}[2]{\mbox{${#1}\!\!\upharpoonright_{#2}$}}
+  \newcommand{\reductscript}[2]{\mbox{\tiny${#1}\!\!\upharpoonright_{#2}$}}
+  
+  \newcommand{\isEmpty}{\textit{isEmpty}}
+  
+  \newcommand{\ostoml}{\textsf{os2ml}}
+  
+  \newcommand{\builtin}{\textit{builtin}}
+  
+  % Define PATTERNS with ATTERNS are small capitals:
+  \newcommand{\PATTERNS}{\text{P\textsc{atterns}}}
+  \newcommand{\VARIABLES}{\text{V\textsc{ariables}}}
+  % Define sorts and symbols in the calculus K.
+  
+  \newcommand{\doubleslash}{/\!/{ }}
+  
+  \newcommand{\compose}{\circ}
+  \newcommand{\strict}[1]{\textsf{strict(#1)}}
+
+  \newcommand{\shp}{\includegraphics{hash-symbol}\kern-0.1em}
+  \newcommand{\smallshp}{\includegraphics[scale=0.8]{hash-symbol}\kern-0.1em}
+  \newcommand{\sharpsymbol}{\#}
+  \newcommand{\shs}{\shp s}
+  \newcommand{\shvs}{\shp vs}
+  \newcommand{\smallshs}{\smallshp s}
+  \newcommand{\sharpup}{\texttt{\sharpsymbol up}}
+  \newcommand{\sharpdown}{\texttt{\sharpsymbol down}}
+  % Sec 3.1 Truth
+  \newcommand{\KPred}{\mathit{\shp Pred}}
+  
+  % Sec 3.2 Strings
+  \newcommand{\KChar}{\texttt{\sharpsymbol Char}}
+  \newcommand{\KCharList}{\texttt{\sharpsymbol CharList}}
+  \newcommand{\KString}{\texttt{\sharpsymbol String}}
+  \newcommand{\Kepsilon}{\texttt{\sharpsymbol epsilon}}
+  \newcommand{\KconsKString}{\texttt{\sharpsymbol consKString}}
+  
+  %% We shouldn't need the follows.  
+  \newcommand{\Kconcat}{\texttt{\sharpsymbol concat}}
+  
+  \newcommand{\Kconstructor}{\texttt{\sharpsymbol constructor}}
+  \newcommand{\KconstructorP}[1]{\parametric{\Kconstructor}{#1}}
+  \newcommand{\Kinjective}{\texttt{\sharpsymbol injective}}
+  \newcommand{\KinjectiveP}[1]{\parametric{\Kinjective}{#1}}
+  
+  \newcommand{\KprovableP}[1]{\parametric{\Kdeduce}{#1}}
+  
+  % Sec 3.3 Sorts and Symbols
+  \newcommand{\KSort}{\texttt{\sharpsymbol Sort}}
+  \newcommand{\Ksort}{\texttt{\sharpsymbol sort}}
+  \newcommand{\KSymbol}{\texttt{\sharpsymbol Symbol}}
+  \newcommand{\Ksymbol}{\texttt{\sharpsymbol symbol}}
+  \newcommand{\KSymbolceil}{\texttt{\sharpsymbol `ceil}}
+  \newcommand{\KgetArgumentSorts}{\texttt{\sharpsymbol getArgumentSorts}}
+  \newcommand{\KgetReturnSort}{\texttt{\sharpsymbol getReturnSort}}
+  
+  % Sec 3.4 Finite Lists
+  \newcommand{\ttX}{\texttt{X}}
+  \newcommand{\ttChar}{\texttt{Char}}
+  \newcommand{\ttSort}{\texttt{Sort}}
+  \newcommand{\ttSymbol}{\texttt{Symbol}}
+  \newcommand{\ttVariable}{\texttt{Variable}}
+  \newcommand{\ttPattern}{\texttt{Pattern}}
+  \newcommand{\XList}{\texttt{\sharpsymbol XList}}
+  \newcommand{\KnilXList}{\texttt{\sharpsymbol nilXList}}
+  \newcommand{\KconsXList}{\texttt{\sharpsymbol consXList}}
+  \newcommand{\KappendXList}{\texttt{\sharpsymbol appendXList}}
+  \newcommand{\KinXList}{\texttt{\sharpsymbol inXList}}
+  \newcommand{\KdeleteXList}{\texttt{\sharpsymbol deleteXList}}
+  \newcommand{\KPatternList}{\texttt{\sharpsymbol PatternList}}
+  \newcommand{\KnilKPatternList}{\texttt{\sharpsymbol nilPatternList}}
+  \newcommand{\KconsKPatternList}{\texttt{\sharpsymbol consPatternList}}
+  \newcommand{\KappendKPatternList}{\texttt{\sharpsymbol appendPatternList}}
+  \newcommand{\KinKPatternList}{\texttt{\sharpsymbol inPatternList}}
+  \newcommand{\KdeleteKPatternList}{\texttt{\sharpsymbol deletePatternList}}
+  \newcommand{\KSortList}{\texttt{\sharpsymbol SortList}}
+  \newcommand{\KnilKSortList}{\texttt{\sharpsymbol nilSortList}}
+  \newcommand{\KconsKSortList}{\texttt{\sharpsymbol consSortList}}
+  \newcommand{\KappendKSortList}{\texttt{\sharpsymbol appendSortList}}
+  \newcommand{\KinKSortList}{\texttt{\sharpsymbol inSortList}}
+  \newcommand{\KdeleteKSortList}{\texttt{\sharpsymbol deleteSortList}}
+  \newcommand{\KnilKSymbolList}{\texttt{\sharpsymbol nilSymbolList}}
+  \newcommand{\KconsKSymbolList}{\texttt{\sharpsymbol consSymbolList}}
+  \newcommand{\KSymbolList}{\texttt{\sharpsymbol SymbolList}}
+  \newcommand{\KappendKSymbolList}{\texttt{\sharpsymbol appendSymbolList}}
+  \newcommand{\KinKSymbolList}{\texttt{\sharpsymbol inSymbolList}}
+  \newcommand{\KdeleteKSymbolList}{\texttt{\sharpsymbol deleteSymbolList}}
+  \newcommand{\KnilKCharList}{\texttt{\sharpsymbol nilCharList}}
+  \newcommand{\KconsKCharList}{\texttt{\sharpsymbol consCharList}}
+  \newcommand{\KVariableList}{\texttt{\sharpsymbol VariableList}\xspace}
+  \newcommand{\KnilKVariableList}{\texttt{\sharpsymbol nilVariableList}}
+  \newcommand{\KconsKVariableList}{\texttt{\sharpsymbol consVariableList}}
+  \newcommand{\KinKVariableList}{\texttt{\sharpsymbol inVariableList}}
+  \newcommand{\KappendKVariableList}{\texttt{\sharpsymbol appendVariableList}}
+  \newcommand{\KdeleteKVariableList}{\texttt{\sharpsymbol deleteVariableList}}
+  \newcommand{\KappendKCharList}{\texttt{\sharpsymbol appendKCharList}}
+  \newcommand{\KVariable}{\texttt{\sharpsymbol Variable}}
+  \newcommand{\KVariableAsKPattern}{\texttt{\sharpsymbol variableAsPattern}}
+  \newcommand{\KvariablePattern}{\texttt{\sharpsymbol variablePattern}}
+  \newcommand{\KPattern}{\texttt{\sharpsymbol Pattern}}
+  \newcommand{\Kvariable}{\texttt{\sharpsymbol variable}}
+  \newcommand{\Kand}{\texttt{\sharpsymbol  \slashsymbol and}}
+  \newcommand{\Kor}{\texttt{\sharpsymbol \slashsymbol  or}}
+  \newcommand{\Kimplies}{\texttt{\sharpsymbol  \slashsymbol implies}}
+  \newcommand{\Kiff}{\texttt{\sharpsymbol  \slashsymbol iff}}
+  \newcommand{\Knot}{\texttt{\sharpsymbol  \slashsymbol not}}
+  \newcommand{\Kapplication}{\texttt{\sharpsymbol application}}
+  \newcommand{\Kexists}{\texttt{\sharpsymbol \slashsymbol  exists}}
+  \newcommand{\Kforall}{\texttt{\sharpsymbol \slashsymbol  forall}}
+  \newcommand{\Kequals}{\texttt{\sharpsymbol \slashsymbol  equals}}
+  \newcommand{\Kmembership}{\Kin}
+  \newcommand{\Kin}{\texttt{\sharpsymbol \slashsymbol  in}}
+  \newcommand{\Kcontains}{\texttt{\sharpsymbol  \slashsymbol contains}}
+  \newcommand{\Ktop}{\texttt{\sharpsymbol \slashsymbol  top}}
+  \newcommand{\Kbottom}{\texttt{\sharpsymbol \slashsymbol  bottom}}
+  \newcommand{\Kfloor}{\texttt{\sharpsymbol \slashsymbol  floor}}
+  \newcommand{\Kceil}{\texttt{\sharpsymbol \slashsymbol  ceil}}
+  \newcommand{\Knext}{\texttt{\sharpsymbol \slashsymbol next}}
+  \newcommand{\Krewrites}{\texttt{\sharpsymbol \slashsymbol rewrites}}
+  
+  \newcommand{\KVariableListAsKPatternList}
+    {\texttt{\sharpsymbol variableListAsPatternList}\xspace}
+  
+  \newcommand{\Kdv}{\texttt{\sharpsymbol \slashsymbol dv}}
+  
+  \newcommand{\KgetFV}{\texttt{\sharpsymbol getFV}}
+  \newcommand{\KgetFVFromPatterns}{\texttt{\sharpsymbol getFVFromPatterns}}
+  \newcommand{\KoccursFree}{\texttt{\sharpsymbol occursFree}}
+  \newcommand{\KfreshName}{\texttt{\sharpsymbol freshName}}
+  \newcommand{\Kcons}{\texttt{\sharpsymbol cons}}
+  \newcommand{\Knil}{\texttt{\sharpsymbol nil}}
+  \newcommand{\KSymbolzero}{\texttt{\sharpsymbol Symbolzero}}
+  \newcommand{\KSymbolcons}{\texttt{\sharpsymbol Symbolcons}}
+  \newcommand{\KSymbolnil}{\texttt{\sharpsymbol Symbolnil}}
+  
+  \newcommand{\KSignature}{\texttt{\sharpsymbol Signature}}
+  \newcommand{\Ksignature}{\texttt{\sharpsymbol signature}}
+  \newcommand{\KgetSorts}{\texttt{\sharpsymbol getSorts}}
+  \newcommand{\KgetSymbols}{\texttt{\sharpsymbol getSymbols}}
+  \newcommand{\KsortDeclared}[1]{
+  	\parametric{\texttt{\sharpsymbol sortDeclared}}{#1}}
+  \newcommand{\KsortsDeclared}[1]{
+        \parametric{\texttt{\sharpsymbol sortsDeclared}}{#1}}
+  \newcommand{\KsymbolDeclared}[1]{
+  	\parametric{\texttt{\sharpsymbol symbolDeclared}}{#1}}
+  \newcommand{\KaxiomDeclared}{\texttt{\sharpsymbol axiomDeclared}}
+  \newcommand{\Kderivable}{\Kdeduce}
+  
+  \newcommand{\Ksubsort}[1]{\parametric{\texttt{\sharpsymbol subsort}}{#1}}
+  \newcommand{\Ksubsorts}[1]{\parametric{\texttt{\sharpsymbol subsorts}}{#1}}
+  \newcommand{\KSortConnectedComponent}{\texttt{\sharpsymbol 
+  SortConnectedComponent}}
+  \newcommand{\KsubsortOverloading}[1]{
+  	\parametric{\texttt{\sharpsymbol subsortOverloading}}{#1}}
+  
+  \newcommand{\KwellFormed}{\texttt{\sharpsymbol wellFormed}}
+  \newcommand{\KwellFormedPatterns}{\texttt{\sharpsymbol wellFormedPatterns}}
+  \newcommand{\KgetSort}{\texttt{\sharpsymbol getSort}}
+  \newcommand{\KgetSortsFromPatterns}{\texttt{\sharpsymbol 
+  getSortsFromPatterns}}
+  \newcommand{\KisSort}{\texttt{\sharpsymbol isSort}}
+  \newcommand{\Ksubstitute}{\texttt{\sharpsymbol substitute}}
+  \newcommand{\KsubstitutePatterns}{\texttt{\sharpsymbol substitutePatterns}}
+  
+  \newcommand{\KTheory}{\texttt{\sharpsymbol Theory}}
+  \newcommand{\Ktheory}{\texttt{\sharpsymbol theory}}
+  \newcommand{\KwellFormedTheory}{\texttt{\sharpsymbol wellFormedTheory}}
+  
+  \newcommand{\Kdeduce}{\textup{\texttt{\sharpsymbol provable}}}
+  
+  \newcommand{\Ksc}[1]{\parametric{\textup{\texttt{\sharpsymbol sc}}}{#1}}
+  
+  % The italic font of "ceil" used in math mode.
+  \newcommand{\cl}{\mathit{ceil}}
+  
+  \newcommand{\doublecolon}{::}
+  % Use quotation marks "..." in math mode.
+  \newcommand{\quot}[1]{\mathrm{``#1"}}
+  \newcommand{\quottt}[1]{\textrm{\lq\texttt{#1}\rq}}
+  \newcommand{\qquottt}[1]{\textrm{``\texttt{#1}''}}
+
+  \newcommand{\Pattern}{\textsc{Pattern}\xspace}
+  \newcommand{\ra}{\rightarrow}
+  \newcommand{\lra}{\leftrightarrow}
+  \newcommand{\FV}{{\it FV}}
+  
+  \newcommand{\name}{\mathit{name}}
+  \newcommand{\llist}{\mathit{list}}
+  \newcommand{\smalltt}[1]{\texttt{\small #1} }
+  \newcommand{\sort}{\smalltt{sort}}
+  \newcommand{\symb}{\smalltt{symbol}}
+  \newcommand{\axiom}{\smalltt{axiom}}
+  
+  \newcommand{\inj}[2]{\parametric{\mathit{inj}}{#1, #2}}
+  \newcommand{\retract}[2]{\parametric{\mathit{retract}}{#1, #2}}
+  \newcommand{\factorial}{\textit{factorial}}
+  % User-defined sorts & symbols in the meta-theory
+  \newcommand{\KqNat}{\texttt{\shp `Nat}{ }}
+  \newcommand{\KqList}{\texttt{\shp `List}{ }}
+  \newcommand{\Kqzero}{\texttt{\shp `zero}{ }}
+  \newcommand{\Kqsucc}{\texttt{\shp `succ}{ }}
+  \newcommand{\Kqplus}{\texttt{\shp `plus}{ }}
+  \newcommand{\Kqnil}{\texttt{\shp `nil}{ }}
+  \newcommand{\Kqcons}{\texttt{\shp `cons}{ }}
+  \newcommand{\Kqappend}{\texttt{\shp `append}{ }}
+  \newcommand{\KqK}{\texttt{\shp `K}{}}
+  \newcommand{\Kqinj}{\texttt{\shp `inj}}
+  
+  % Define the slash symbol
+  \newcommand{\slashsymbol}{\symbol{92}}
+  % Define slashed ttfamily words
+  \newcommand{\slsh}[1]{\texttt{\slashsymbol#1}}
+  \newcommand{\sland}{\slsh{and}}
+  \newcommand{\slor}{\slsh{or}}
+  \newcommand{\slnot}{\slsh{not}}
+  \newcommand{\slimplies}{\slsh{implies}}
+  \newcommand{\sliff}{\slsh{iff}}
+  \newcommand{\slequals}{\slsh{equals}}
+  \newcommand{\slexists}{\slsh{exists}}
+  \newcommand{\slforall}{\slsh{forall}}
+  \newcommand{\sltop}{\slsh{top}}
+  \newcommand{\slbottom}{\slsh{bottom}}
+  \newcommand{\slceil}{\slsh{ceil}}
+  \newcommand{\slfloor}{\slsh{floor}}
+  \newcommand{\slin}{\slsh{in}}
+  \newcommand{\slnext}{\slsh{next}}
+  \newcommand{\slrewrites}{\slsh{rewrites}}
+  
+  \newcommand{\sldv}{\slsh{dv}}
+  
+  \newcommand{\itlogic}{\mathit{logic}}
+  \newcommand{\itconnective}{\mathit{connective}}
+  \newcommand{\itsort}{\mathit{sort}}
+  \newcommand{\itsymbol}{\mathit{symbol}}
+  \newcommand{\itdeclared}{\mathit{declared}}
+  \newcommand{\itsortDeclared}{\mathit{sortDeclared}}
+  \newcommand{\collapse}{\mathit{collapse}}
+  
+  \newcommand{\ttv}{\texttt{v}}
+  \newcommand{\ttp}{\texttt{p}}
+  \newcommand{\itvp}{\mathit{vp}}
+  
+  \newcommand{\att}{\mathit{att}}
+  \newcommand{\verbose}{\mathit{verbose}}
+  \newcommand{\var}{\mathit{var}}
+  
+
+  
+  % Define syntactic category <category>
+  \newcommand{\syntacc}[1]{\text{$\langle$\textit{#1}$\rangle$}}
+
+  % Title and authors
+  \title{On Injections}
+  \author{Formal Systems Laboratory \\
+          University of Illinois at Urbana-Champaign}
+
+\begin{document}
+
+\maketitle
+
+\info[inline]{Written by Grigore on paper and edited by Radu Mereuta. This is supposed to start a conversation on injections in K and eventually be integrated into the semantics-of-k. }
+
+
+\section{Injections}
+\label{sec:injections}
+
+%page 1
+
+Recall parametric productions (in front-end):
+\[ syntax \{P_1, \dots , P_k\} N \Coloneqq T_1 N_1 \dots T_n N_n T_{n+1} \]
+The non-terminals $N, N_1, \dots, N_n$ can make use of parameters $P_1, \dots, P_k$. We also discussed about allowing the parameters to be optionally specified among the terminals $T_1, \dots, T_n, T_{n+1}$ and non-terminals $N_1, \dots, N_n$, e.g. $T_1 \{P_1\} N_1 \dots$, but that is irrelevant for this discussion. The implicit semantics of parametric productions is that of infinitely many instances, one for each concrete parameter instance. In KORE, to each production like above we associate a parametric symbol:
+
+\[ \sigma \{P_1, \dots , P_n\}(N_1, \dots, N_n):N \]
+
+Now let's consider the special case of injections, which correspond to productions like above where $n=1$ and $T_1 = T_n = $``'' that is,
+\[ syntax \{P_1, \dots, P_n\} N \Coloneqq N_1\]
+
+As a concrete example, assume the following:
+\begin{align*}
+&sort \ Map\{K,V\} \\
+&syntax \{V\} \ MapInt\{V\} ::= Map\{Int\{\}, V\}
+\end{align*}
+
+By abuse of notation let \[inj_{N_1,N}\{P_1, \dots,P_k\}(N_1):N\] be the parametric symbol corresponding to the generic injection production above. Note that for now $inj$ is \underline{not} parametric in the two sorts! It is defined like an ordinary symbol. For our example:
+
+\[inj_{Map\{Int\{\},V\},MapInt\{V\}}\{V\}(Map\{Int\{\},V\}):MapInt\{V\}\]
+
+%page 2
+
+Injection symbols are different from ordinary symbols, in that they inherit an expected semantics of ``injections''. For example, take an instance $\theta$ of the parameters $P_1, \dots,P_k$. Then any element of sort $\theta(N_1)$ is expected to also be found among the elements of sort $\theta(N)$, possibly renamed. Moreover, such injections are expected to be consistent.
+
+1. For example, assume another production:
+\[syntax \{Q_1, \dots,Q_L\} \ M \Coloneqq M_1\]
+with corresponding injection:
+\[inj_{M_1,M}\{Q_1, \dots,Q_L\}(M_1):M\]
+such that there is some instance $\rho$ of the parameters $Q_1, \dots,Q_L$ such that $\rho(M_1) = \theta(N1)$ and $\rho(M) = \theta(N)$. Then we certainly want the following to hold:
+\[inj_{N_1,N}\{\theta(\bar{P})\}(\phi:\theta(N_1))=inj_{M_1,N}\{\rho(\bar{Q})\}(\phi)\]
+
+2. As another example, assume productions:
+
+\begin{align*}
+&syntax \{A_1, \dots,A_a\} \ X \Coloneqq X_1     & \alpha \\ 
+&syntax \{B_1, \dots,B_b\} \ Y_1 \Coloneqq Y_2 & \beta \\
+&syntax \{C_1, \dots,C_c\} \ Z \Coloneqq Z_2     & \gamma \\
+\end{align*}
+such that there are some parameter instances $\alpha$, $\beta$ and $\gamma$ such that $\alpha(X_1)=\beta(Y_1)$, $\alpha(X)=\gamma(Z)$, and $\beta(Y_2)=\gamma(Z_2)$. Then we certainly want:
+\[inj_{X_1,X}\{\alpha(\bar{A})\}(inj_{Y_2,Y_1}\{\beta(\bar{B})\}(\phi:\beta(Y_2)))=inj_{Z_2,Z}\{\gamma(\bar{C})\}(\phi)\]
+%page 3
+We also want parametric sorts to lift subsorts.
+
+3. That is, if
+\[inj_{N_1,N}\{P_1, \dots,P_k\}(N_1):N\]
+is an injection parametric symbol corresponding to production $syntax \{P_1, \dots,P_k\} \ N \Coloneqq N_1$, then we also want to have parametric symbols
+\[inj_{sort\{N_1\},sort\{N\}}\{P_1, \dots,P_k\}(sort\{N_1,\dots\}):sort\{N,\dots\}\]
+for any other parametric sort $sort\{\_,\dots\}$.
+
+4. The situation is actually a lot more complex! The injection symbols need to be consistent not only among themselves, but also w.r.t. other symbols that end up being overloaded due to parametricity. Consider for example:
+
+\begin{align*}
+&syntax Exp \Coloneqq Int\\ 
+&syntax \{S\} \ List\{S\} \Coloneqq cons(S, List\{S\} \\
+\end{align*}
+or in KORE:
+\begin{align*}
+&sort List\{S\} \\ 
+&symbol inj_{Int,Exp}(Int):Exp \\
+&symbol cons\{S\}(S,List\{S\}):List\{S\}
+\end{align*}
+Then we need to add the following axiom:
+\[inj_{List\{Int\},List\{Exp\}}(cons\{Exp\}(\phi:Int,\psi:List\{Int\}))=cons\{Exp\}(inj_{Int,Exp}(\phi),inj_{List\{Int\},List\{Exp\}}(\psi))\]
+
+5. But what if the parametric symbol does not depend on the parameter, that is, say:
+\[symbol\ length\{S\}(List\{S\}):Int\]
+%page 4
+Then we need to add an axiom as follows:
+\[length\{Int\}(\phi:List\{Int\})=length\{Exp\}(inj_{List\{Int\},List\{Exp\}}(\phi))\]
+
+6. On the other hand, if the result of a symbol depends on a parameter that is not constrained by its arguments, then we cannot add any injection axioms. For example, consider:
+\[symbol \  cast\{P_1,P_2\}(P_1):P_2\]
+while it makes sense to add axioms like:
+\[inj_{Int,Exp}(cast\{Int,Int\}(\phi:Int))=cast\{Int,Exp\}(\phi)\]
+you cannot instantiate $P_2$ with everything, eg., you cannot add:
+\[inj_{Int,String}(cast\{Int,Int\}(\phi:Int))=cast\{Int,String\}(\phi)\]
+
+So things are really tricky.
+What I propose is to add the following axioms for now, and \underline{in parallel} to have somebody really interested in this problem study it in depth. Note that knowledge of order-sorted algebra will be a big plus here!
+
+%page 5
+
+\subsection{Proposal for injections}
+
+1. Define/assume one parametric symbol
+\[symbol\ inj\{P_1,P_2\}(P_1):P_2\]
+This is what we do now too. Note that this is \underline{different} from having one $inj$ symbol for each subsorting. In particular, for the subsorting discussed at the beginning of this writing
+\[syntax \{V\} \ MapInt\{V\} ::= Map\{Int\{\}, V\}\]
+instead of the injection label we had there, namely:
+\[inj_{Map\{Int\{\},V\},MapInt\{V\}}\{V\}(Map\{Int\{\},V\}):MapInt\{V\}\]
+we refer to this subsorting using the generic injection:
+\[inj\{MapInt\{V\},Map\{Int,V\}\}\]
+I do not know how to state that a subsorting has been declared, or if it is needed, so I postpone this aspect for now.
+
+2. Axiomatize that $inj$ is functional, because otherwise we will not be able to prove that ``1+x'', etc. are ``terms'':
+\[axiom\{P_1,P_2\} \ \forall x:P_1 . \exists y:P_2 . inj\{P_1,P_2\}(x)=y\]
+I don't think that we want to axiomatize that $inj$ is an \underline{injective} function, because we may want to inject sets of larger cardinals (e.g. identifiers) into sets of smaller cardinals (e.g. $Bool(x\ or\ y)\ and\ x\ =\ x$).
+
+3. Axiomatize that inj is reflexive:
+\[axiom\{S\} \ inj\{S,S\}(\phi:S)=\phi\]
+
+%page 6
+4. Axiomatize that injections compose (or are transitive):
+\[axiom\{P_1,P_2,P_3\} \ inj\{P_2,P_3\}(inj\{P_1,P_2\}(\phi:P_1))=inj\{P_1,P_3\}(\phi)\]
+
+5. And here is an aggressive axiom, but which I dare to claim is OK: Unrestricted propagation through parametric symbols. For each $symbol\ \sigma\{P_1,\dots,P_k\}(S_1,\dots,S_n):S$ where $P_1, \dots,P_k$ are parameters and $S_1,\dots,S_n,S$ are sorts potentially parametric in $P_1, \dots,P_k$, add axiom:
+
+\begin{align*}
+axiom\{P_1, \dots,P_k\,P'_1,\dots,P'_k\} \ inj\{S,S'\}(\sigma\{P_1,\dots,P_k\}(\phi_1:S_1,\dots,\phi_n:S_n))\\=\sigma\{P'_1,\dots,P'_n\}(inj\{S1,S'_1\}(\phi_1),\dots,inj\{S_k,S'_k\}(\phi_k))
+\end{align*}
+where $S'_1,\dots,S'_n$ are $S_1[P'_1/P_1,\dots,P'_k/P_k],\dots,S_n[P'_1,\dots,P'_k/P_k]$, and $S[P'_1/P_1,\dots,P'_k/P_k]$.
+
+OK, now I can hear you guys yelling at me, ``what the heck is this? It is too aggressive!''. In particular, that it admits nonsensical properties to be proven, like the one for the cast symbol above in 5 above. And I would agree, but I do believe that we should either disallow symbols like in 5 above, or otherwise give a serious warning. Note that inj itself is such a symbol :-)
+
+What makes me believe that axiom 4 above is OK is that it corresponds to the main requirement of order-sorted algebra, namely \underline{regularity}. Let me elaborate.
+
+%page 7
+
+\subsection{Order-sorted regularity (or pre-regularity?)}
+
+In OSA, you have a partial order on sorts $(S,\le)$. Symbols are allowed to be overloaded, but they must obey the \underline{regularity} property, in order for things to make sense mathematically:
+
+Def: $(S,\Sigma)$ regular iff for any $\sigma:s_1\times \dots \times s_n\rightarrow s$ and $\sigma:s'_1\times \dots \times s'_n\rightarrow s'$ such that $s_1 \le s'_1, \dots, s_n \le s'_n$, we have $s \le s'$.
+
+In our setting, since we disallow overloaded symbols except for parametric ones, and since we build our subsort relation constructively through parametric sorts starting with a base subsort relation, I dare to claim things:
+
+a. That the axiom in 4. above corresponds to regularity in OSA, which is therefore a reasonable thing to have.
+
+b. Under a mild restriction, that in each $\sigma \{P_1, \dots , P_n\}(S_1, \dots, S_n):S$ the sorts $S_1,\dots,S_n$ already refer to \underline{all} parameters $P_1, \dots , P_n$, we can show that the resulting order-sorted signature, whose only overloaded symbols are the parametric ones, is \underline{regular}. The ``resulting'' partial order on sorts is the least relation $\le$ closed under the following:
+
+\begin{itemize}
+\item ``$syntax S' \Coloneqq S$'' implies $S \le S'$
+\item transitive and reflexive
+\item if $S_1 \le S'_1, \dots, S_k \le S'_k$ and $Sort\{P_1,\dots,P_k\}$ is a parametric sort, then $Sort\{S_1,\dots,S_k\} \le Sort\{S'_1,\dots,S'_k\}$.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
