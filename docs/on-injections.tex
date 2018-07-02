@@ -526,7 +526,7 @@
 
 \maketitle
 
-\info[inline]{Written by Grigore on paper and edited by Radu Mereuta. This is supposed to start a conversation on injections in K and eventually be integrated into the semantics-of-k. }
+\info[inline]{Written by Grigore on paper and edited by Radu Mereuta. This is supposed to start a conversation on injections in K and eventually be integrated into semantics-of-k. }
 
 
 \section{Injections}
@@ -585,17 +585,19 @@ for any other parametric sort $sort\{\_,\dots\}$.
 4. The situation is actually a lot more complex! The injection symbols need to be consistent not only among themselves, but also w.r.t. other symbols that end up being overloaded due to parametricity. Consider for example:
 
 \begin{align*}
-&syntax Exp \Coloneqq Int\\ 
-&syntax \{S\} \ List\{S\} \Coloneqq cons(S, List\{S\} \\
+&syntax\ Exp \Coloneqq Int\\ 
+&syntax \{S\} \ List\{S\} \Coloneqq cons(S, List\{S\}) \\
 \end{align*}
 or in KORE:
 \begin{align*}
-&sort List\{S\} \\ 
-&symbol inj_{Int,Exp}(Int):Exp \\
-&symbol cons\{S\}(S,List\{S\}):List\{S\}
+&sort\ List\{S\} \\ 
+&symbol\ inj_{Int,Exp}(Int):Exp \\
+&symbol\ cons\{S\}(S,List\{S\}):List\{S\}
 \end{align*}
 Then we need to add the following axiom:
-\[inj_{List\{Int\},List\{Exp\}}(cons\{Exp\}(\phi:Int,\psi:List\{Int\}))=cons\{Exp\}(inj_{Int,Exp}(\phi),inj_{List\{Int\},List\{Exp\}}(\psi))\]
+\begin{align*}
+inj_{List\{Int\},List\{Exp\}}(cons\{Int\}(\phi:Int,\psi:List\{Int\}))\\ =cons\{Exp\}(inj_{Int,Exp}(\phi),inj_{List\{Int\},List\{Exp\}}(\psi))
+\end{align*}
 
 5. But what if the parametric symbol does not depend on the parameter, that is, say:
 \[symbol\ length\{S\}(List\{S\}):Int\]
@@ -641,11 +643,11 @@ I don't think that we want to axiomatize that $inj$ is an \underline{injective} 
 5. And here is an aggressive axiom, but which I dare to claim is OK: Unrestricted propagation through parametric symbols. For each $symbol\ \sigma\{P_1,\dots,P_k\}(S_1,\dots,S_n):S$ where $P_1, \dots,P_k$ are parameters and $S_1,\dots,S_n,S$ are sorts potentially parametric in $P_1, \dots,P_k$, add axiom:
 
 \begin{align*}
-axiom\{P_1, \dots,P_k\,P'_1,\dots,P'_k\} \ inj\{S,S'\}(\sigma\{P_1,\dots,P_k\}(\phi_1:S_1,\dots,\phi_n:S_n))\\=\sigma\{P'_1,\dots,P'_n\}(inj\{S1,S'_1\}(\phi_1),\dots,inj\{S_k,S'_k\}(\phi_k))
+axiom\{P_1, \dots,P_k,P'_1,\dots,P'_k\} \ inj\{S,S'\}(\sigma\{P_1,\dots,P_k\}(\phi_1:S_1,\dots,\phi_n:S_n))\\=\sigma\{P'_1,\dots,P'_n\}(inj\{S1,S'_1\}(\phi_1),\dots,inj\{S_k,S'_k\}(\phi_k))
 \end{align*}
-where $S'_1,\dots,S'_n$ are $S_1[P'_1/P_1,\dots,P'_k/P_k],\dots,S_n[P'_1,\dots,P'_k/P_k]$, and $S[P'_1/P_1,\dots,P'_k/P_k]$.
+where $S'_1,\dots,S'_n$ are $S_1[P'_1/P_1,\dots,P'_k/P_k],\dots,S_n[P'_1/P_1,\dots,P'_k/P_k]$, and $S[P'_1/P_1,\dots,P'_k/P_k]$.
 
-OK, now I can hear you guys yelling at me, ``what the heck is this? It is too aggressive!''. In particular, that it admits nonsensical properties to be proven, like the one for the cast symbol above in 5 above. And I would agree, but I do believe that we should either disallow symbols like in 5 above, or otherwise give a serious warning. Note that inj itself is such a symbol :-)
+OK, now I can hear you guys yelling at me, ``what the heck is this? It is too aggressive!''. In particular, that it admits nonsensical properties to be proven, like the one for the cast symbol above in 6 above. And I would agree, but I do believe that we should either disallow symbols like in 6 above, or otherwise give a serious warning. Note that inj itself is such a symbol :-)
 
 What makes me believe that axiom 4 above is OK is that it corresponds to the main requirement of order-sorted algebra, namely \underline{regularity}. Let me elaborate.
 
@@ -659,12 +661,12 @@ Def: $(S,\Sigma)$ regular iff for any $\sigma:s_1\times \dots \times s_n\rightar
 
 In our setting, since we disallow overloaded symbols except for parametric ones, and since we build our subsort relation constructively through parametric sorts starting with a base subsort relation, I dare to claim things:
 
-a. That the axiom in 4. above corresponds to regularity in OSA, which is therefore a reasonable thing to have.
+a. That the axiom in 5. above corresponds to regularity in OSA, which is therefore a reasonable thing to have.
 
 b. Under a mild restriction, that in each $\sigma \{P_1, \dots , P_n\}(S_1, \dots, S_n):S$ the sorts $S_1,\dots,S_n$ already refer to \underline{all} parameters $P_1, \dots , P_n$, we can show that the resulting order-sorted signature, whose only overloaded symbols are the parametric ones, is \underline{regular}. The ``resulting'' partial order on sorts is the least relation $\le$ closed under the following:
 
 \begin{itemize}
-\item ``$syntax S' \Coloneqq S$'' implies $S \le S'$
+\item $syntax\ S' \Coloneqq S$ implies $S \le S'$
 \item transitive and reflexive
 \item if $S_1 \le S'_1, \dots, S_k \le S'_k$ and $Sort\{P_1,\dots,P_k\}$ is a parametric sort, then $Sort\{S_1,\dots,S_k\} \le Sort\{S'_1,\dots,S'_k\}$.
 \end{itemize}
